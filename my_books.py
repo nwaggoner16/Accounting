@@ -22,11 +22,20 @@ def make_entry():
 		transfer = csv.writer(t)
 		transfer.writerow(mk_lst)
 		
+#Define a function to view accounts
+def view_account():
+	with open('acc.csv', 'r') as a:
+		for item in a:
+			if "100" in item:
+				print item
+		
 #Intro and initiate program
 print "Welcome to Nathan's super awesome accounting program!"
 choice = raw_input("What would you like to do? \nE - Make entry \nV - View account \nX - Exit\n: ") 
 if choice.upper() == "E":
 	make_entry()
 	
+elif choice.upper() == "A":
+	view_account()
 else:
 	print "goodbye"
