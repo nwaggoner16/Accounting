@@ -1,22 +1,30 @@
 #Create a dictionary to hold expense information and functions to recall specific info.
 
 from datetime import date
+import csv
 
 #Create a  class to define accounts
 class account(object):
 	def __init__(self):
-		self.account_num = raw_input("What is your account number?")
-		self.amount = raw_input("How much did it cost?")
-		self.details = raw_input("Why did you spend my money?")
-		self.date = raw_input("What is the date?")
+		self.account_num = raw_input("What is your account number? ")
+		self.amount = raw_input("How much did it cost? ")
+		self.details = raw_input("Why did you spend my money? ")
+		self.date = raw_input("What is the date? ")
 	
 #Define a function to make a journal entry
 def make_entry():
 	entry = account()
 	print "So you spent %s for %s on %s and you want to put it into account %s?" % (entry.amount, entry.details, entry.date, entry.account_num)
-	mk_str = ("%s, %s, %s, %s") % (entry.account_num, entry.amount, entry.details, entry.date) 
-	with open("acc.csv", "w") as transfer:
-		transfer.write(mk_str)
+
+	an = entry.account_num
+	am = entry.amount
+	de = entry.details
+	da = entry.date
+	mk_str = (an, am, de, da)
+	
+	with open(r'acc.csv', 'a') as t:
+		transfer = csv.writer(t)
+		transfer.writerow(mk_str)
 		
 
 print "Welcome to Nathan's super awesome accounting program!"
