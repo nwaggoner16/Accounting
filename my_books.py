@@ -15,14 +15,14 @@ class account(object):
 def make_entry():
 	entry = account()
 	print "So you spent %s for %s on %s and you want to put it into account %s?" % (entry.amount, entry.details, entry.date, entry.account_num)
-
 	mk_lst = (entry.account_num, entry.amount, entry.details, entry.date)
 	
+	#Append entry to acc.csv file
 	with open(r'acc.csv', 'a') as t:
 		transfer = csv.writer(t)
 		transfer.writerow(mk_lst)
 		
-
+#Intro and initiate program
 print "Welcome to Nathan's super awesome accounting program!"
 choice = raw_input("What would you like to do? \nE - Make entry \nV - View account \nX - Exit\n: ") 
 if choice.upper() == "E":
