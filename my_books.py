@@ -5,13 +5,19 @@ from datetime import date
 #Create a  class to define accounts
 class account(object):
 	def __init__(self):
-		self.account = raw_input("What is your account number?")
+		self.account_num = raw_input("What is your account number?")
 		self.amount = raw_input("How much did it cost?")
 		self.details = raw_input("Why did you spend my money?")
 		self.date = raw_input("What is the date?")
 	
-	def print_entry(self):
-		print self.account
-		
-entry = account()
-print "So you spent %s for %s on %s and you want to put it into account %s?" % (entry.amount, entry.details, entry.date, entry.account)
+#Define a function to make a journal entry
+def make_entry():
+	entry = account()
+	print "So you spent %s for %s on %s and you want to put it into account %s?" % (entry.amount, entry.details, entry.date, entry.account_num)
+
+print "Welcome to Nathan's super awesome accounting program!"
+choice = raw_input("What would you like to do? \nE - Make entry \nV - View account \nX - Exit\n: ") 
+if choice.upper() == "E":
+	make_entry()
+else:
+	print "goodbye"
