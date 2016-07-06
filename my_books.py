@@ -16,15 +16,11 @@ def make_entry():
 	entry = account()
 	print "So you spent %s for %s on %s and you want to put it into account %s?" % (entry.amount, entry.details, entry.date, entry.account_num)
 
-	an = entry.account_num
-	am = entry.amount
-	de = entry.details
-	da = entry.date
-	mk_str = (an, am, de, da)
+	mk_lst = (entry.account_num, entry.amount, entry.details, entry.date)
 	
 	with open(r'acc.csv', 'a') as t:
 		transfer = csv.writer(t)
-		transfer.writerow(mk_str)
+		transfer.writerow(mk_lst)
 		
 
 print "Welcome to Nathan's super awesome accounting program!"
