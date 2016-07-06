@@ -4,19 +4,14 @@ from datetime import date
 
 #Create a  class to define accounts
 class account(object):
-	def __init__(self, account, amount, details, date):
-		self.name = name
-		self.account = account
-		self.amount = amount
-		self.details = details
-		self.date = date
+	def __init__(self):
+		self.account = raw_input("What is your account number?")
+		self.amount = raw_input("How much did it cost?")
+		self.details = raw_input("Why did you spend my money?")
+		self.date = raw_input("What is the date?")
 	
-
-def entry(account):
-	one.account = raw_input("What is your account number?")
-	one.amount = raw_input("How much did it cost?")
-	one.details = raw_input("Why did you spend my money?")
-	one.date = raw_input("What is the date?")
-	print account.one
-	
-	
+	def print_entry(self):
+		print self.account
+		
+entry = account()
+print "So you spent %s for %s on %s and you want to put it into account %s?" % (entry.amount, entry.details, entry.date, entry.account)
