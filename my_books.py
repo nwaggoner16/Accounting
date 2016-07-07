@@ -5,20 +5,25 @@ import csv
 
 #Create a  class to define accounts
 class account(object):
-	def __init__(self):
-		self.account_num = raw_input("What is your account number? ")
-		self.amount = raw_input("How much did it cost? ")
-		self.details = raw_input("Why did you spend my money? ")
-		self.date = raw_input("What is the date? ")
+	def __init__(self, account_num, amount, details, date):
+		self.account_num = account_num
+		self.amount = amount
+		self.details = details
+		self.date = date
 	
 #Define a function to make a journal entry
 def make_entry():
-	entry = account()
+	account_num = raw_input("What is your account number? ")
+	amount = raw_input("How much did it cost? ")
+	details = raw_input("Why did you spend my money? ")
+	date = raw_input("What is the date? ")
+	entry = account(account_num, amount, details, date)
+	
 	print "So you spent %s for %s on %s and you want to put it into account %s?" % (entry.amount, entry.details, entry.date, entry.account_num)
 	mk_lst = (entry.account_num, entry.amount, entry.details, entry.date)
 	
 	#Append entry to acc.csv file
-	with open(r'acc.csv', 'a') as t:
+	with open(r'%s.csv' % (entry.account_num), 'a') as t:
 		transfer = csv.writer(t)
 		transfer.writerow(mk_lst)
 		
@@ -35,7 +40,7 @@ choice = raw_input("What would you like to do? \nE - Make entry \nV - View accou
 if choice.upper() == "E":
 	make_entry()
 	
-elif choice.upper() == "A":
+elif choice.upper() == "V":
 	view_account()
 else:
 	print "goodbye"
