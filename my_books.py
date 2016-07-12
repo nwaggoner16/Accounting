@@ -27,7 +27,7 @@ def make_entry():
     mk_lst = (entry.account_num, entry.amount, entry.details, entry.date)
 
     # Append entry to acc.csv file
-    with open(r'%s.csv' % (entry.account_num), 'a') as t:
+    with open(r'%s.csv' % entry.account_num, 'a') as t:
         transfer = csv.writer(t)
         transfer.writerow(mk_lst)
 
