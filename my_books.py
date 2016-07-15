@@ -51,23 +51,40 @@ def double_entry():
     if debit_am == credit_am:
         intro()
 
-# Define a function to view accounts
-def view_account():
-    with open('acc.csv', 'r') as a:
-        for item in a:
-            if "100" in item:
-                print item
-
-
+# Define a function to view a sum of accounts
+def view_account_total():
+	acn = raw_input("What account would you like to view?")
+	with open('%s.csv' % acn , 'r') as a:
+		col = csv.reader(a)
+		debit= ()
+		deb = 0
+		for row in col:
+			debit = row[1]
+			deb += int(debit)
+	
+	with open('%s.csv' % acn , 'r') as a:
+		col = csv.reader(a)	
+		credit = ()
+		cre = 0
+		for row in col:
+			credit = row[2]
+			cre += int(credit)
+			
+		print "Total Debits: %s \nTotal Credits: %s" % (deb, cre)
+				
+			
+				
+			
+		
 # Intro and initiate program
 def intro():
     print "Welcome to Nathan's super awesome accounting program!"
-    choice = raw_input("What would you like to do? \nE - Make entry \nV - View account \nX - Exit\n: ")
+    choice = raw_input("What would you like to do? \nE - Make entry \nV - View account totals \nX - Exit\n: ")
     if choice.upper() == "E":
         double_entry()
 
     elif choice.upper() == "V":
-        view_account()
+        view_account_total()
     else:
         print "goodbye"
 
