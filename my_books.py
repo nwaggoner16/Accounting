@@ -4,14 +4,16 @@ from datetime import date
 import csv
 
 
+
 # Create a  class to define accounts
 class account(object):
-    def __init__(self, account_num, debit_am, credit_am, details, date):
+    def __init__(self, account_num, debit_am, credit_am, details, en_date, datestamp):
         self.account_num = account_num
         self.debit_am = debit_am
         self.credit_am = credit_am
         self.details = details
-        self.date = date
+        self.en_date = en_date
+        self.datestamp = datestamp
 
 
 # Define a function to make a journal entry
@@ -19,12 +21,11 @@ def make_entry():
     account_num = raw_input("What is your account number? ")
     amount = raw_input("How much did it cost? ")
     details = raw_input("Why did you spend my money? ")
-    date = raw_input("What is the date? ")
-    entry = account(account_num, amount, details, date)
+    en_date = raw_input("What is the date? ")
+    entry = account(account_num, amount, details, en_date)
 
-    print "So you spent %s for %s on %s and you want to put it into account %s?" % (
-    entry.amount, entry.details, entry.date, entry.account_num)
-    mk_lst = (entry.account_num, entry.amount, entry.details, entry.date)
+    print "So you spent %s for %s on %s and you want to put it into account %s?" % (entry.amount, entry.details, entry.en_date, entry.account_num)
+    mk_lst = (entry.account_num, entry.amount, entry.details, entry.en_date)
 
     # Append entry to acc.csv file
     with open(r'%s.csv' % entry.account_num, 'a') as t:
@@ -34,26 +35,34 @@ def make_entry():
 #Define double entry function
 def double_entry():
     print "Remember debits and credits must be equal!"
-    account_num = raw_input("Account: ")
+    deb_acc = raw_input("Debit Account: ")
     debit_am = raw_input("Debit amount: ")
+    cred_acc = raw_input("Credit Account: ")
     credit_am = raw_input("Credit amount: ")
-    details = raw_input("Why did you spend my money? ")
-    date = raw_input("What is the date? ")
-    entry = account(account_num, debit_am, credit_am, details, date)
+    details = raw_input("Description: ")
+    en_date = raw_input("Entry date: ")
+    datestamp = date.today()
+    entry = account(deb_acc, debit_am, 0, details, en_date, datestamp)
+    ent_2 = account(cred_acc, 0, credit_am, details, en_date, datestamp)
 
-    mk_lst = (entry.account_num, entry.debit_am, entry.credit_am, entry.details, entry.date)
+    mk_lst = (entry.account_num, entry.debit_am, entry.credit_am, entry.details, entry.en_date, entry.datestamp)
+    mk_lst2 = (ent_2.account_num, ent_2.debit_am, ent_2.credit_am, ent_2.details, ent_2.en_date, ent_2.datestamp)
 
     # Append entry to acc.csv file
     with open(r'%s.csv' % (entry.account_num), 'a+') as t:
         transfer = csv.writer(t)
         transfer.writerow(mk_lst)
+    
+    with open(r'%s.csv' % (ent_2.account_num), 'a+') as x:
+        transfer = csv.writer(x)
+        transfer.writerow(mk_lst2)
 
     if debit_am == credit_am:
         intro()
 
 # Define a function to view a sum of accounts
 def view_account_total():
-	acn = raw_input("What account would you like to view?")
+	acn = raw_input("What account would you like to view: ")
 	with open('%s.csv' % acn , 'r') as a:
 		col = csv.reader(a)
 		debit= ()
