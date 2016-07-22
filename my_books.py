@@ -35,32 +35,58 @@ def make_entry():
 #Define double entry function
 def double_entry():
     print "Remember debits and credits must be equal!"
-    deb_acc = raw_input("Debit Account: ")
-    debit_am = raw_input("Debit amount: ")
-    cred_acc = raw_input("Credit Account: ")
-    credit_am = raw_input("Credit amount: ")
-    details = raw_input("Description: ")
-    en_date = raw_input("Entry date: ")
-    datestamp = date.today()
-    entry = account(deb_acc, debit_am, 0, details, en_date, datestamp)
-    ent_2 = account(cred_acc, 0, credit_am, details, en_date, datestamp)
-
-    mk_lst = (entry.account_num, entry.debit_am, entry.credit_am, entry.details, entry.en_date, entry.datestamp)
-    mk_lst2 = (ent_2.account_num, ent_2.debit_am, ent_2.credit_am, ent_2.details, ent_2.en_date, ent_2.datestamp)
-    
+    accounts = []
     with open('acc.csv', 'r') as accsv:
     	acclist = csv.reader(accsv, delimiter = ',')
-	for row in acclist:
-		for field in row:
-			if field == deb_acc:
-				# Append entry to acc.csv file
-				with open(r'%s.csv' % (entry.account_num), 'a+') as t:
-					transfer = csv.writer(t)
-					transfer.writerow(mk_lst)
+    	for row in acclist:
+			for field in row:
+				accounts.append(field)
     
-    			with open(r'%s.csv' % (ent_2.account_num), 'a+') as x:
-    				transfer = csv.writer(x)
-    				transfer.writerow(mk_lst2)
+    deb_acc = raw_input("Debit Account: ")
+    #Making sure appropriate account number is used
+    while deb_acc not in accounts:
+    	print "Please use a real account."
+    	deb_acc = raw_input("Debit Account: ") 
+    
+    debit_am = raw_input("Debit amount: ")
+    cred_acc = raw_input("Credit Account: ")
+    #Making sure appropriate account number is used
+    while cred_acc not in accounts:
+    	print "Please use a real account."
+    	cred_acc = raw_input("Debit Account: ") 
+    credit_am = raw_input("Credit amount: ")
+    #Checking to make sure debits and credits are equal
+    if debit_am != credit_am:
+    	print "I told you Debits must equal credits!"
+    	double_entry()
+    else:
+    	details = raw_input("Description: ")
+    	en_date = raw_input("Entry date: ")
+    	datestamp = date.today()
+    	
+    	print "Debit Account: %s\nAmount: %s\nCredit Account: %s\nAmount: %s\nDetails: %s\nEntry Date: %s" % (deb_acc, debit_am, cred_acc, credit_am, details, en_date)
+    	correct = raw_input("Finalize entry? y/n")
+    	if correct.upper() == 'Y':
+    	
+    	
+    		#Creating class objects for debit and credit accounts
+    		entry = account(deb_acc, debit_am, 0, details, en_date, datestamp)
+    		ent_2 = account(cred_acc, 0, credit_am, details, en_date, datestamp)
+    		#Create lists to hold the desired variables from account objects
+    		mk_lst = (entry.account_num, entry.debit_am, entry.credit_am, entry.details, entry.en_date, entry.datestamp)
+    		mk_lst2 = (ent_2.account_num, ent_2.debit_am, ent_2.credit_am, ent_2.details, ent_2.en_date, ent_2.datestamp)
+    
+    		with open('acc.csv', 'r') as accsv:
+    			acclist = csv.reader(accsv, delimiter = ',')
+	
+			
+				# Append entry to acc.csv file
+			with open(r'%s.csv' % (entry.account_num), 'a+') as t:
+				transfer = csv.writer(t)
+				transfer.writerow(mk_lst)
+			with open(r'%s.csv' % (ent_2.account_num), 'a+') as x:
+				transfer = csv.writer(x)
+				transfer.writerow(mk_lst2)
 
 
 # Define a function to view a sum of accounts
