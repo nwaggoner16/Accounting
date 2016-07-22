@@ -47,18 +47,21 @@ def double_entry():
 
     mk_lst = (entry.account_num, entry.debit_am, entry.credit_am, entry.details, entry.en_date, entry.datestamp)
     mk_lst2 = (ent_2.account_num, ent_2.debit_am, ent_2.credit_am, ent_2.details, ent_2.en_date, ent_2.datestamp)
-
-    # Append entry to acc.csv file
-    with open(r'%s.csv' % (entry.account_num), 'a+') as t:
-        transfer = csv.writer(t)
-        transfer.writerow(mk_lst)
     
-    with open(r'%s.csv' % (ent_2.account_num), 'a+') as x:
-        transfer = csv.writer(x)
-        transfer.writerow(mk_lst2)
+    with open('acc.csv', 'r') as accsv:
+    	acclist = csv.reader(accsv, delimiter = ',')
+	for row in acclist:
+		for field in row:
+			if field == deb_acc:
+				# Append entry to acc.csv file
+				with open(r'%s.csv' % (entry.account_num), 'a+') as t:
+					transfer = csv.writer(t)
+					transfer.writerow(mk_lst)
+    
+    			with open(r'%s.csv' % (ent_2.account_num), 'a+') as x:
+    				transfer = csv.writer(x)
+    				transfer.writerow(mk_lst2)
 
-    if debit_am == credit_am:
-        intro()
 
 # Define a function to view a sum of accounts
 def view_account_total():
