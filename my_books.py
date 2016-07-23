@@ -16,21 +16,6 @@ class account(object):
         self.datestamp = datestamp
 
 
-# Define a function to make a journal entry
-def make_entry():
-    account_num = raw_input("What is your account number? ")
-    amount = raw_input("How much did it cost? ")
-    details = raw_input("Why did you spend my money? ")
-    en_date = raw_input("What is the date? ")
-    entry = account(account_num, amount, details, en_date)
-
-    print "So you spent %s for %s on %s and you want to put it into account %s?" % (entry.amount, entry.details, entry.en_date, entry.account_num)
-    mk_lst = (entry.account_num, entry.amount, entry.details, entry.en_date)
-
-    # Append entry to acc.csv file
-    with open(r'%s.csv' % entry.account_num, 'a') as t:
-        transfer = csv.writer(t)
-        transfer.writerow(mk_lst)
 
 #Define double entry function
 def double_entry():
@@ -50,11 +35,13 @@ def double_entry():
     
     debit_am = raw_input("Debit amount: ")
     cred_acc = raw_input("Credit Account: ")
+    
     #Making sure appropriate account number is used
     while cred_acc not in accounts:
     	print "Please use a real account."
-    	cred_acc = raw_input("Debit Account: ") 
+    	cred_acc = raw_input("Crebit Account: ") 
     credit_am = raw_input("Credit amount: ")
+    
     #Checking to make sure debits and credits are equal
     if debit_am != credit_am:
     	print "I told you Debits must equal credits!"
@@ -66,8 +53,7 @@ def double_entry():
     	
     	print "Debit Account: %s\nAmount: %s\nCredit Account: %s\nAmount: %s\nDetails: %s\nEntry Date: %s" % (deb_acc, debit_am, cred_acc, credit_am, details, en_date)
     	correct = raw_input("Finalize entry? y/n")
-    	if correct.upper() == 'Y':
-    	
+    	if correct.upper() == 'Y':	
     	
     		#Creating class objects for debit and credit accounts
     		entry = account(deb_acc, debit_am, 0, details, en_date, datestamp)
@@ -79,7 +65,6 @@ def double_entry():
     		with open('acc.csv', 'r') as accsv:
     			acclist = csv.reader(accsv, delimiter = ',')
 	
-			
 				# Append entry to acc.csv file
 			with open(r'%s.csv' % (entry.account_num), 'a+') as t:
 				transfer = csv.writer(t)
