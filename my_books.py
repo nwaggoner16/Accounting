@@ -2,7 +2,8 @@
 
 from datetime import date
 import csv
-
+import period
+import report
 
 
 # Create a  class to define accounts
@@ -30,12 +31,15 @@ def double_entry():
     deb_acc = raw_input("Debit Account: ")
     #Making sure appropriate account number is used
     while deb_acc not in accounts:
+    	#Pro tip: print accounts for super user friend experience.
     	print "Please use a real account."
     	deb_acc = raw_input("Debit Account: ") 
     
     debit_am = raw_input("Debit amount: ")
-    cred_acc = raw_input("Credit Account: ")
     
+    #What is the difference between debit and credit account?
+    
+    cred_acc = raw_input("Credit Account: ")    
     #Making sure appropriate account number is used
     while cred_acc not in accounts:
     	print "Please use a real account."
@@ -45,57 +49,74 @@ def double_entry():
     #Checking to make sure debits and credits are equal
     if debit_am != credit_am:
     	print "I told you Debits must equal credits!"
+    	#How about, printing the accounts you just inputed and then trying again
+    	#at the debit and credit amounts.
     	double_entry()
     else:
-    	details = raw_input("Description: ")
+    	details = raw_input("Description: ")#Describes what the entry is for, what the user just bought, ect.
     	en_date = raw_input("Entry date: ")
     	datestamp = date.today()
     	
     	print "Debit Account: %s\nAmount: %s\nCredit Account: %s\nAmount: %s\nDetails: %s\nEntry Date: %s" % (deb_acc, debit_am, cred_acc, credit_am, details, en_date)
-    	correct = raw_input("Finalize entry? y/n")
+    	correct = raw_input("Finalize entry? y/n \n")
     	if correct.upper() == 'Y':	
     	
     		#Creating class objects for debit and credit accounts
-    		entry = account(deb_acc, debit_am, 0, details, en_date, datestamp)
-    		ent_2 = account(cred_acc, 0, credit_am, details, en_date, datestamp)
+    		debit_entry = account(deb_acc, debit_am, 0, details, en_date, datestamp)
+    		credit_entry = account(cred_acc, 0, credit_am, details, en_date, datestamp)
     		#Create lists to hold the desired variables from account objects
-    		mk_lst = (entry.account_num, entry.debit_am, entry.credit_am, entry.details, entry.en_date, entry.datestamp)
-    		mk_lst2 = (ent_2.account_num, ent_2.debit_am, ent_2.credit_am, ent_2.details, ent_2.en_date, ent_2.datestamp)
+    		#Silly python needs to write to the csv using a list and I don't know how to convert a class instance to a list of properties.
+    		debit_list = (debit_entry.account_num, debit_entry.debit_am, debit_entry.credit_am, debit_entry.details, debit_entry.en_date, debit_entry.datestamp)
+    		credit_list = (credit_entry.account_num, credit_entry.debit_am, credit_entry.credit_am, credit_entry.details, credit_entry.en_date, credit_entry.datestamp)
     
     		with open('acc.csv', 'r') as accsv:
     			acclist = csv.reader(accsv, delimiter = ',')
 	
 				# Append entry to acc.csv file
-			with open(r'%s.csv' % (entry.account_num), 'a+') as t:
+			with open(r'%s.csv' % (debit_entry.account_num), 'a+') as t:
 				transfer = csv.writer(t)
-				transfer.writerow(mk_lst)
-			with open(r'%s.csv' % (ent_2.account_num), 'a+') as x:
+				transfer.writerow(debit_list)
+			with open(r'%s.csv' % (credit_entry.account_num), 'a+') as x:
 				transfer = csv.writer(x)
-				transfer.writerow(mk_lst2)
+				transfer.writerow(credit_list)
 
 
 # Define a function to view a sum of accounts
 def view_account_total():
 	acn = raw_input("What account would you like to view: ")
 	with open('%s.csv' % acn , 'r') as a:
-		col = csv.reader(a)
-		debit= ()
+		debit_file = csv.reader(a)
+		debit = ()
 		deb = 0
-		for row in col:
+		for row in debit_file:
+			#row is an array. Position 1 is the debit amount.
 			debit = row[1]
 			deb += int(debit)
 	
 	with open('%s.csv' % acn , 'r') as a:
-		col = csv.reader(a)	
+		credit_file = csv.reader(a)	
 		credit = ()
 		cre = 0
-		for row in col:
+		for row in credit_file: 
+			#Position 2 is the credit amount.
 			credit = row[2]
 			cre += int(credit)
 			
-		print "Total Debits: %s \nTotal Credits: %s" % (deb, cre)
-				
+		print "Total Debit Amount: %s \nTotal Credit Amount: %s" % (deb, cre)
+
+
+
+def check_period():
+	x = raw_input("Period: ")
+	period_check = period.date_check(x)
+	print period_check
+	intro()		
 			
+def period_total():
+	x = raw_input("Period: ")
+	y = raw_input("Account: ")
+	report.view_period_total(x,y)
+	
 				
 			
 		
@@ -108,6 +129,10 @@ def intro():
 
     elif choice.upper() == "V":
         view_account_total()
+    elif choice.upper() == "C":
+    	check_period()
+    elif choice.upper() == "P":
+    	period_total()
     else:
         print "goodbye"
 
