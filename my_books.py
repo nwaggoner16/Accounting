@@ -1,6 +1,6 @@
 # Create a dictionary to hold expense information and functions to recall specific info.
 
-from datetime import date
+import datetime
 import csv
 import period
 import report
@@ -55,7 +55,7 @@ def double_entry():
     else:
     	details = raw_input("Description: ")#Describes what the entry is for, what the user just bought, ect.
     	en_date = raw_input("Entry date: ")
-    	datestamp = date.today()
+    	datestamp = datetime.date.today()
     	
     	print "Debit Account: %s\nAmount: %s\nCredit Account: %s\nAmount: %s\nDetails: %s\nEntry Date: %s" % (deb_acc, debit_am, cred_acc, credit_am, details, en_date)
     	correct = raw_input("Finalize entry? y/n \n")
@@ -107,7 +107,7 @@ def view_account_total():
 
 
 def check_period():
-	x = raw_input("Period: ")
+	x = raw_input("Date: ")
 	period_check = period.date_check(x)
 	print period_check
 	intro()		
@@ -116,17 +116,15 @@ def period_total():
 	x = raw_input("Period: ")
 	y = raw_input("Account: ")
 	report.view_period_total(x,y)
-	
+	intro()
 				
 			
 		
 # Intro and initiate program
 def intro():
-    print "Welcome to Nathan's super awesome accounting program!"
-    choice = raw_input("What would you like to do? \nE - Make entry \nV - View account totals \nX - Exit\n: ")
+    choice = raw_input("What would you like to do? \nE - Make entry \nV - View account totals \nP - Period total \nX - Exit\n: ")
     if choice.upper() == "E":
         double_entry()
-
     elif choice.upper() == "V":
         view_account_total()
     elif choice.upper() == "C":
@@ -136,5 +134,5 @@ def intro():
     else:
         print "goodbye"
 
-
+print "Welcome to Nathan's super awesome accounting program!"
 intro()
